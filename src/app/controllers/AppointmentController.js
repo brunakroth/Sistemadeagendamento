@@ -6,22 +6,26 @@ import File from '../models/File';
 
 class AppointmentController {
 
-    async index(req, res){
+    async index(req, res) {
+        const { page = 1 } = req.query;
+
         const appointments = await Appointment.findAll({
-            where: {user_id: req.userId, canceled_at: null},
+            where: { user_id: req.userId, canceled_at: null },
             order: ['date'],
             attributes: ['id', 'date'],
+            offset: (page - 1) * 20,
+            limit: 20,
             include: [
                 {
                     model: User,
                     as: 'collaborator',
-                    attributes: ['id','name'],
+                    attributes: ['id', 'name'],
                     include: [
                         {
-                        model: File,
-                        as: 'photo',
-                        attributes: ['id', 'path', 'url'],
-                    }]
+                            model: File,
+                            as: 'photo',
+                            attributes: ['id', 'path', 'url'],
+                        }]
                 }
             ],
         })
@@ -66,7 +70,7 @@ class AppointmentController {
             }
         })
 
-        if(checkAvaialability){
+        if (checkAvaialability) {
             return res.status(400).json({
                 erro: 'Horário não disponível para este colaborador'
             })
