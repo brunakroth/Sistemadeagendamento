@@ -25,6 +25,10 @@ routes.put('/users', UserController.update);
 // Rota de agendamento:
 routes.post('/appointments', AppointmentController.store)
 
+// Listagem de agendamento:
+routes.get('/appointments', AppointmentController.index)
+
+
 // Lista todos os colaboradores:
 routes.get('/collaborator', CollaboratorController.index)
 
