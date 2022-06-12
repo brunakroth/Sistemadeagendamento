@@ -23,12 +23,12 @@ class ScheduleController {
         const appointments = await Appointment.findAll({
             where: {
                 collaborator_id: req.userId,
-                canceled_at: null,
                 date: {
                     [Op.between]: [startOfDay(parseDate), endOfDay(parseDate)],
                 },
             },
-            order: ['date']
+            order: ['date'],
+
         });
         return res.json(appointments)
     }
